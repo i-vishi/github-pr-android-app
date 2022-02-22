@@ -25,4 +25,5 @@ interface GitHubApiService {
 
 object GitHubApi {
     val retrofitService: GitHubApiService by lazy { retrofit.create(GitHubApiService::class.java) }
+    val repoName = "$USER_NAME/$REPO_NAME"
 }

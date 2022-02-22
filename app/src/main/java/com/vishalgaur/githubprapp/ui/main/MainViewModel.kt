@@ -20,8 +20,22 @@ class MainViewModel : ViewModel() {
     private val _pullRequests = MutableLiveData<List<PullRequest>>()
     val pullRequests: LiveData<List<PullRequest>> get() = _pullRequests
 
+    private var _repoName: String? = null
+    val repoName: String? get() = _repoName
+
     init {
+        initRepoName()
         getAllClosedPRs()
+    }
+
+    private fun initRepoName() {
+        viewModelScope.launch {
+            try {
+                _repoName = GitHubApi.repoName
+            } catch(e: Exception) {
+                Log.d(TAG, "exception = ${e.message}")
+            }
+        }
     }
 
     private fun getAllClosedPRs() {

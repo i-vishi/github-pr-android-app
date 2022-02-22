@@ -29,13 +29,16 @@ class MainFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        // TODO: Use the ViewModel
+        //
+        setTitle()
+    }
+
+    private fun setTitle() {
+        // Initializing Title
+        binding.mainTitle.text = viewModel.repoName
     }
 
     private fun initViews() {
-        // Initializing Title
-        binding.mainTitle.text = "Repository Name"
-
         // initializing Recycler View
         binding.prRecyclerView.apply {}
     }
