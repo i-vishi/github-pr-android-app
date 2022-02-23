@@ -84,6 +84,12 @@ class MainFragment : Fragment() {
                         } else {
                             prAdapter.data = prList
                             prAdapter.notifyDataSetChanged()
+                            val newPrs = viewModel.newPullRequests.value ?: emptyList()
+                            if(newPrs.isNotEmpty()) {
+                                val linearLayoutManager = binding.prRecyclerView.layoutManager as? LinearLayoutManager
+                                val firstPos = linearLayoutManager?.findFirstCompletelyVisibleItemPosition() ?: 0
+                                linearLayoutManager?.scrollToPositionWithOffset(firstPos, 0)
+                            }
                         }
                     } else {
                         binding.prRecyclerView.visibility = View.GONE
