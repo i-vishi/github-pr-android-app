@@ -3,4 +3,6 @@
     <string name="mainFragment">MainFragment</string>
     <string name="pr_title">PR Title</string>
     <string name="pr_subtitle">Pull Request Sub Title</string>
+    <string name="no_pull_requests_found">No Pull Requests Found</string>
+    <string name="no_pr_found">No PR Found</string>
 </resources>

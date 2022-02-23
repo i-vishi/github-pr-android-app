@@ -19,6 +19,20 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Repo Name" />
 
+    <TextView
+        android:id="@+id/no_pr_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="32dp"
+        android:text="@string/no_pull_requests_found"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/main_title" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/pr_recycler_view"
         android:layout_width="match_parent"
