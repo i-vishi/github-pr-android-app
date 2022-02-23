@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.vishalgaur.githubprapp.R
 import com.vishalgaur.githubprapp.adapters.PullRequestAdapter
 import com.vishalgaur.githubprapp.databinding.MainFragmentBinding
@@ -46,6 +48,17 @@ class MainFragment : Fragment() {
         //
         prAdapter = PullRequestAdapter(viewModel.pullRequests.value ?: emptyList())
         binding.prRecyclerView.adapter = prAdapter
+
+        // add on scroll listener
+        binding.prRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val linearLayoutManager = recyclerView.layoutManager as? LinearLayoutManager
+                val prListSize = viewModel.pullRequests.value?.size ?: 0
+                if(linearLayoutManager?.findLastCompletelyVisibleItemPosition() == prListSize - 1)
+                    viewModel.getMorePullRequests()
+            }
+        })
     }
 
     private fun setObservers() {
@@ -65,9 +78,13 @@ class MainFragment : Fragment() {
             if(status != null && status != GitHubApiStatus.LOADING) {
                 viewModel.pullRequests.observe(viewLifecycleOwner) { prList ->
                     if(prList.isNotEmpty()) {
-                        prAdapter.data = prList
-                        binding.prRecyclerView.adapter = prAdapter
-                        binding.prRecyclerView.adapter?.notifyDataSetChanged()
+                        if(prAdapter.data.isNullOrEmpty()) {
+                            prAdapter.data = prList
+                            binding.prRecyclerView.adapter = prAdapter
+                        } else {
+                            prAdapter.data = prList
+                            prAdapter.notifyDataSetChanged()
+                        }
                     } else {
                         binding.prRecyclerView.visibility = View.GONE
                         binding.loaderLayout.loaderFrameLayout.visibility = View.GONE

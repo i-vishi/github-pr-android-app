@@ -4,6 +4,7 @@ import com.google.gson.GsonBuilder
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 private const val BASE_URL = "https://api.github.com/repos/"
 private const val USER_NAME = "octocat"
@@ -18,8 +19,11 @@ private val retrofit = Retrofit.Builder()
 
 interface GitHubApiService {
 
-    @GET("$USER_NAME/$REPO_NAME/pulls?status=closed")
-    suspend fun getPullRequests(): List<PullRequest>
+    @GET("$USER_NAME/$REPO_NAME/pulls")
+    suspend fun getPullRequests(
+        @Query("status") status: String = "closed",
+        @Query("page") page: String = "1"
+    ): List<PullRequest>
 
 }
 
