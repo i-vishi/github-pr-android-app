@@ -29,11 +29,6 @@ class MainFragment : Fragment() {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-//        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //
@@ -43,7 +38,9 @@ class MainFragment : Fragment() {
 
     private fun setViews() {
         // Initializing Title
-        binding.mainTitle.text = viewModel.repoName
+        viewModel.repoName?.let {
+            activity?.actionBar?.title = it
+        }
         binding.loaderLayout.loaderFrameLayout.visibility = View.GONE
         binding.noPrTv.visibility = View.GONE
         //

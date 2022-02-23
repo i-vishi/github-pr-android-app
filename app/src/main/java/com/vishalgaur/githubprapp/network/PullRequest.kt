@@ -8,9 +8,9 @@ data class PullRequest(
     @Json(name = "body")
     val body: String?,
     @Json(name = "closed_at")
-    val closed_at: String,
+    val closed_at: String?,
     @Json(name = "created_at")
-    val created_at: String,
+    val created_at: String?,
     @Json(name = "head")
     val head: HashMap<String, Any?>,
     @Json(name = "html_url")
@@ -20,7 +20,7 @@ data class PullRequest(
     @Json(name = "issue_url")
     val issue_url: String,
     @Json(name = "merged_at")
-    val merged_at: String,
+    val merged_at: String?,
     @Json(name = "node_id")
     val node_id: String,
     @Json(name = "number")
@@ -30,7 +30,7 @@ data class PullRequest(
     @Json(name = "title")
     val title: String?,
     @Json(name = "updated_at")
-    val updated_at: String,
+    val updated_at: String?,
     @Json(name = "url")
     val url: String,
     @Json(name = "user")
