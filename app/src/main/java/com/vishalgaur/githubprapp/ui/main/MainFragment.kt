@@ -25,53 +25,60 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = MainFragmentBinding.inflate(layoutInflater)
+        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+//        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         //
-        setTitle()
-        setRecyclerView()
+        setViews()
         setObservers()
     }
 
-    private fun setTitle() {
+    private fun setViews() {
         // Initializing Title
         binding.mainTitle.text = viewModel.repoName
-    }
-
-    private fun setRecyclerView() {
-        // initializing Recycler View
-        val prList = viewModel.pullRequests.value ?: emptyList()
-        prAdapter = PullRequestAdapter(prList)
+        binding.loaderLayout.loaderFrameLayout.visibility = View.GONE
+        binding.noPrTv.visibility = View.GONE
+        //
+        prAdapter = PullRequestAdapter(viewModel.pullRequests.value ?: emptyList())
         binding.prRecyclerView.adapter = prAdapter
     }
 
     private fun setObservers() {
         viewModel.status.observe(viewLifecycleOwner) {status ->
             when(status) {
-                GitHubApiStatus.DONE -> {
+                GitHubApiStatus.LOADING -> {
                     binding.noPrTv.visibility = View.GONE
+                    binding.loaderLayout.loaderFrameLayout.visibility = View.VISIBLE
+                    binding.loaderLayout.circularLoader.showAnimationBehavior
                 }
                 else -> {
-                    binding.prRecyclerView.visibility = View.GONE
-                    binding.noPrTv.visibility = View.VISIBLE
-                    binding.noPrTv.text = getString(R.string.no_pr_found)
+                    binding.loaderLayout.circularLoader.hideAnimationBehavior
+                    binding.loaderLayout.loaderFrameLayout.visibility = View.GONE
                 }
             }
-        }
-        viewModel.pullRequests.observe(viewLifecycleOwner) { prList ->
-            if(prList.isNotEmpty()) {
-                binding.prRecyclerView.visibility = View.VISIBLE
-                prAdapter.data = prList
-                binding.prRecyclerView.adapter = prAdapter
-                binding.prRecyclerView.adapter?.notifyDataSetChanged()
-            } else {
-                binding.prRecyclerView.visibility = View.GONE
-                binding.noPrTv.visibility = View.VISIBLE
-                binding.noPrTv.text = getString(R.string.no_pr_found)
+
+            if(status != null && status != GitHubApiStatus.LOADING) {
+                viewModel.pullRequests.observe(viewLifecycleOwner) { prList ->
+                    if(prList.isNotEmpty()) {
+                        prAdapter.data = prList
+                        binding.prRecyclerView.adapter = prAdapter
+                        binding.prRecyclerView.adapter?.notifyDataSetChanged()
+                    } else {
+                        binding.prRecyclerView.visibility = View.GONE
+                        binding.loaderLayout.loaderFrameLayout.visibility = View.GONE
+                        binding.loaderLayout.circularLoader.hideAnimationBehavior
+                        binding.noPrTv.visibility = View.VISIBLE
+                        binding.noPrTv.text = getString(R.string.no_pr_found)
+                    }
+                }
             }
         }
     }
