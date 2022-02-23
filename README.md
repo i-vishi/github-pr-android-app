@@ -16,6 +16,14 @@ Clone this repository and import into Android Studio
 git clone https://github.com/i-vishi/github-pr-android-app.git
 ```
 
+### Configuration
+
+- The default repository can be changed in file `GitHubApiService.kt` by changing `USER_NAME` and `REPO_NAME`:
+```kotlin
+private const val USER_NAME = "JetBrains"
+private const val REPO_NAME = "kotlin"
+```
+
 ## Built With
 - Kotlin
 - GitHub API
