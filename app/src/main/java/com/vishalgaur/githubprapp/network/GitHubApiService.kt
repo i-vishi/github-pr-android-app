@@ -7,8 +7,8 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 private const val BASE_URL = "https://api.github.com/repos/"
-private const val USER_NAME = "octocat"
-private const val REPO_NAME = "hello-world"
+private const val USER_NAME = "JetBrains"
+private const val REPO_NAME = "kotlin"
 
 private val gson = GsonBuilder().create()
 
