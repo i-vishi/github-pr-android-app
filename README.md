@@ -1,5 +1,5 @@
 # GitHub PR Android App
-An android app to see closed pull requests og a public GitHub Repository
+An android app to see closed pull requests of a public GitHub Repository
 
 
 ## Overview
@@ -18,7 +18,7 @@ git clone https://github.com/i-vishi/github-pr-android-app.git
 
 ### Configuration
 
-- The default repository can be changed in file `GitHubApiService.kt` by changing `USER_NAME` and `REPO_NAME`:
+- The default repository can be changed in file `GitHubApiService.kt` by changing values of `USER_NAME` and `REPO_NAME`:
 ```kotlin
 private const val USER_NAME = "JetBrains"
 private const val REPO_NAME = "kotlin"
